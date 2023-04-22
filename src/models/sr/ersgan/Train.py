@@ -10,9 +10,9 @@ import numpy as np
 
 from .dataset import ERSDataset
 from .model import (ExtractFeature,
-                   Discriminator,
-                   GeneratorRRDB,
-                   ResInResDenseBlock)
+                    Discriminator,
+                    GeneratorRRDB,
+                    ResInResDenseBlock)
 
 from tqdm import tqdm
 from PIL import Image
@@ -41,7 +41,7 @@ class ERSTrainer:
                  path2data: str = "./",
                  save_every: int = 5,
                  pretrain: bool = False,
-                 path2pretrain=None,
+                 path2pretrain:dict=None,
                  mode_train: bool = False  # for debug
                  ) -> None:
 
@@ -106,8 +106,8 @@ class ERSTrainer:
             self.discriminator.apply(weghts_init)
 
         if pretrain:
-            self.generator.load_state_dict(torch.load(path2pretrain))
-            self.discriminator.load_state_dict(torch.load(path2pretrain))
+            self.generator.load_state_dict(torch.load(path2pretrain["generator"]))
+            self.discriminator.load_state_dict(torch.load(path2pretrain["discriminator"]))
 
         self.dataloader = get_dataloader()
 
@@ -120,6 +120,18 @@ class ERSTrainer:
         # imgs_lr = make_grid(imgs_lr, nrow=1, normalize=True)
         img_grid = self.denormalize(torch.cat((imgs_lr, gen_hr), -1))
         save_image(img_grid, f"images/{n}.png", nrow=1, normalize=False)
+
+    def use_model(self, 
+                  imgs_lr:str):
+        img = Image.open(imgs_lr)
+        img = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(self.mean, self.std)])
+        
+        gen_hr = self.generator(img)
+
+        img_grid = self.denormalize(torch.cat((img, gen_hr), -1))
+        save_image(img_grid, f"images/{os.path.basename(imgs_lr).split('.')[0]}.png", nrow=1, normalize=False)
 
     def denormalize(self, tensor):
         for i in range(3):

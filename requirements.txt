@@ -1,6 +1,11 @@
-torch>=0.4.0
+torch
 torchvision
+tqdm
 matplotlib
 numpy
 scipy
 pillow
+onnx
+opencv-python
+pycaret
+streamlit
