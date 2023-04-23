@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 def activation_layer(activation: str='relu', 
                      alpha: float=0.1, 
                      inplace: bool=True):
@@ -19,7 +20,9 @@ class ConvBlock(nn.Module):
                  kernel_size: int, 
                  stride: int, 
                  padding: int):
-        super(ConvBlock, self).__init__()
+        
+        super().__init__()
+
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding)
         self.bn = nn.BatchNorm2d(out_channels)
         
@@ -35,7 +38,9 @@ class ResidualBlock(nn.Module):
                  stride=1, 
                  dropout=0.2, 
                  activation='leaky_relu'):
-        super(ResidualBlock, self).__init__()
+        
+        super().__init__()
+
         self.convb1 = ConvBlock(in_channels, out_channels, kernel_size=3, stride=stride, padding=1)
         self.act1 = activation_layer(activation)
 
@@ -64,13 +69,13 @@ class ResidualBlock(nn.Module):
         
         return out
 
-class Network(nn.Module):
+class HandWriteRecognModel(nn.Module):
 
     def __init__(self, 
                  num_chars: int, 
                  activation: str='leaky_relu', 
                  dropout: float=0.2):
-        super(Network, self).__init__()
+        super().__init__()
 
         self.rb1 = ResidualBlock(3, 16, skip_conv = True, stride=1, activation=activation, dropout=dropout)
         self.rb2 = ResidualBlock(16, 16, skip_conv = True, stride=2, activation=activation, dropout=dropout)

@@ -537,3 +537,7 @@ class Discriminator(nn.Module):
                 img):
         
         return self.discriminate(img)
+    
+
+if __name__ == "__main__":
+    pass

@@ -39,9 +39,6 @@ def visualize_augment(path_to_img:str,
     plt.tight_layout()
     plt.show()
     
-def n_param(model):
-    return sum([p.numel() for p in model.parameters() if p.requires_grad])
-
 
 if __name__ == "__main__":
     visualize_augment("D:\\works\\cv_for_noobs\\src\\datasets\\celeba\\img_align_celeba\\000001.jpg")

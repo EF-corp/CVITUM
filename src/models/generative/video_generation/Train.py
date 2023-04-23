@@ -21,3 +21,10 @@ import os
 import math
 
 
+class VideoGeneratorTrainer:
+
+    def __init__(self,
+                 ) -> None:
+
+
+        pass
